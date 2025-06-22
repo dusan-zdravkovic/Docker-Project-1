@@ -2,45 +2,45 @@
 
 Uses sample application for users following the getting started guide at https://docs.docker.com/get-started/.
 
-- Learning Docker, SQL, Pipeline from scratch, CRON job, airflow, Airbyte
+- Learning Docker, SQL, Pipeline from scratch, CRON job, Airflow, Airbyte
 
-## Process - Docker
+## Docker Setup Process
 
-- Clone the starter repo
-git clone https://github.com/docker/getting-started-app.git
+- Clone the starter repository:
+`git clone https://github.com/docker/getting-started-app.git`
 
-- Build Docker image
+- Build the Docker image:
 ```
 docker build -t getting-started .
 ```
 
-- Run the container on port 3000
+- Run the container on port 3000:
 ```
 docker run -dp 127.0.0.1:3000:3000 getting-started
 ```
 
-### Add a volume for persistence
+### Step 4: Add Volume for Persistence
 
-- Create a volume to store data
+- Create a Docker volume to store data persistently:
 ```
 docker volume create todo-db
 ```
 
-- Run the container and mount the volume to /etc/todos inside the container
+- Run the container and mount the volume to the path `/etc/todos` inside the container:
 ```
 docker run -dp 127.0.0.1:3000:3000 \
   --mount type=volume,src=todo-db,target=/etc/todos \
   getting-started
 ```
 
-### Set up MySQL container
+### Step 5: Set Up MySQL Container
 
-- Create a Docker network for app communication
+- Create a Docker network for container communication:
 ```
 docker network create todo-app
 ```
 
-- Run the MySQL container with environment variables
+- Run the MySQL container with environment variables for root password and database name:
 ```
 docker run -d \
   --network todo-app --network-alias mysql \
@@ -50,12 +50,12 @@ docker run -d \
   mysql:8.0
 ```
 
-- Connect to the MySQL container
+- Connect to the running MySQL container:
 ```
 docker exec -it <mysql-container-id> mysql -u root -p
 ```
 
-- Show databases to verify `todos` exists
+- Verify that the `todos` database exists by showing databases:
 ```
 SHOW DATABASES;
 ```
