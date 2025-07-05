@@ -57,5 +57,6 @@ docker exec -it <mysql-container-id> mysql -u root -p
 
 - Verify that the `todos` database exists by showing databases:
 ```
+-- List all available databases to confirm 'todos' was created
 SHOW DATABASES;
 ```
