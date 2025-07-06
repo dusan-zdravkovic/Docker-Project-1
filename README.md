@@ -84,3 +84,16 @@ SELECT * FROM todo_items;
 - Demonstrated improved reproducibility and organization by replacing manual container startup steps with `docker compose`.
 
 - Completed Docker section
+
+## SQL Setup
+
+- using postgres
+
+- Set up a PostgreSQL container using the official image, created a `users` table, and inserted multiple sample records for database testing and querying.
+
+- Designed a `films` table with constraints (e.g., `CHECK` on `user_rating`) and inserted 20 sample movie records. Example:
+  ```sql
+  INSERT INTO films (title, release_date, price, rating, user_rating)
+  VALUES ('Inception', '2010-07-16', 12.99, 'PG-13', 4.8);
+  ```
+  Demonstrated querying techniques using `SELECT`, `LIMIT`, and `COUNT`.
