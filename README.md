@@ -60,3 +60,12 @@ docker exec -it <mysql-container-id> mysql -u root -p
 -- List all available databases to confirm 'todos' was created
 SHOW DATABASES;
 ```
+
+- Verify items are being written to the MySQL database:
+```
+docker exec -it <mysql-container-id> mysql -p todos
+```
+```
+SELECT * FROM todo_items;
+```
+- This confirms that the application is writing todo items to the database correctly.
