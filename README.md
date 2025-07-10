@@ -115,3 +115,19 @@ SELECT * FROM todo_items;
 - Result: clean, reproducible cross-database migration handled entirely in containers
 
 - Demonstrated real-world automation, error handling, and container communication in a production-style setup
+
+---
+
+## dbt Integration (Next Phase)
+
+- The next stage of the project will integrate **dbt (data build tool)** to enable transformation logic directly within the destination PostgreSQL database.
+
+- Planned steps:
+  - Set up a `dbt` project targeting the `destination_postgres` service
+  - Define staging and transformation models based on the ELT-loaded tables (`users`, `films`, etc.)
+  - Use `dbt run` to apply transformations and `dbt docs` to generate documentation
+
+- This phase will showcase:
+  - SQL-based transformation pipelines
+  - Reproducible, version-controlled modeling layers
+  - Automated documentation and testing within a data stack
