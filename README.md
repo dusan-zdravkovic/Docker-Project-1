@@ -1,13 +1,15 @@
 # Data Engineering Portfolio Project
 
-This project serves as a portfolio showcase demonstrating practical skills using a sample application following the getting started guide at https://docs.docker.com/get-started/.
+This project is a hands-on portfolio piece demonstrating real-world data engineering skills using Docker, SQL, and a custom ELT pipeline.
 
-- Built Docker images and launched containers to run and test the app
-- Docker containerization
-- SQL and MySQL integration
-- Data pipeline concepts
-- Workflow automation tools (CRON, Airflow)
-- Data ingestion tools (Airbyte)
+It was built by following and extending Docker’s official getting started guide: https://docs.docker.com/get-started/
+
+Key skills showcased:
+- Docker containerization and orchestration
+- SQL (PostgreSQL & MySQL) schema design and querying
+- ELT pipeline development with Python and Docker Compose
+- Workflow automation concepts (e.g., CRON, Airflow)
+- Modern data ingestion tooling (e.g., Airbyte)
 
 ## Docker Setup Process
 
@@ -81,19 +83,35 @@ SELECT * FROM todo_items;
 - Defined services for both the app and MySQL, specifying image, ports, volumes, environment variables, and working directory.
 - Used `docker compose up -d` to bring up the full stack with a single command.
 - Stopped and removed containers with `docker compose down`.
-- Demonstrated improved reproducibility and organization by replacing manual container startup steps with `docker compose`.
+- Replaced manual container management with Docker Compose to improve reproducibility, maintainability, and scalability.
 
 - Completed Docker section
 
-## SQL Setup
+## PostgreSQL SQL Practice
 
-- using postgres
-
-- Set up a PostgreSQL container using the official image, created a `users` table, and inserted multiple sample records for database testing and querying.
-
-- Designed a `films` table with constraints (e.g., `CHECK` on `user_rating`) and inserted 20 sample movie records. Example:
+- Deployed a PostgreSQL container using the official image
+- Created a `users` table and inserted sample records for querying and testing
+- Created a `films` table with constraints (e.g., `CHECK` on `user_rating`) and inserted 20+ movie records
   ```sql
   INSERT INTO films (title, release_date, price, rating, user_rating)
   VALUES ('Inception', '2010-07-16', 12.99, 'PG-13', 4.8);
   ```
-  Demonstrated querying techniques using `SELECT`, `LIMIT`, and `COUNT`.
+- Demonstrated SQL fundamentals using `SELECT`, `LIMIT`, `COUNT`, `JOIN`, and `UNION` queries
+
+## PostgreSQL ELT Pipeline
+
+- Built a Dockerized ELT pipeline with three coordinated services:
+  - `source_postgres`: seeded with schema and sample data
+  - `destination_postgres`: the target PostgreSQL instance
+  - `elt_script`: Python container that handles data transfer using `pg_dump` and `psql`
+
+- Defined orchestration via `docker-compose.yaml` and custom Dockerfile in `elt_script/`
+
+- ELT script workflow:
+  1. Waits for source DB readiness via `pg_isready`
+  2. Dumps `source_postgres` to `data_dump.sql`
+  3. Loads data into `destination_postgres` via `psql`
+
+- Result: clean, reproducible cross-database migration handled entirely in containers
+
+- Demonstrated real-world automation, error handling, and container communication in a production-style setup
