@@ -1,3 +1,4 @@
 
 node_modules/
 dbt-env/
+logs/
