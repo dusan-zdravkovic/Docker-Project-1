@@ -136,11 +136,26 @@ SELECT * FROM todo_items;
   ```
   List of relations
   Schema | Name           | Type  | Owner
-  -------+----------------+-------+--------
+  -------+----------------+-------+---------
   public | actors         | table | postgres
   public | film_actors    | table | postgres
   public | film_category  | table | postgres
   public | film_ratings   | table | postgres
+  public | films          | table | postgres
+  public | users          | table | postgres
   ```
 
 - Demonstrated a complete data pipeline: from ingestion → ELT → transformation → materialized data models
+- Sample transformed data in the `film_ratings` model:
+
+  ```
+   film_id | title                     | release_date | price | rating | user_rating | rating_category |      actors
+  ---------+---------------------------+--------------+-------+--------+--------------+------------------+---------------------
+        1 | Inception                 | 2010-07-16   | 12.99 | PG-13  | 4.8          | Excellent        | Leonardo DiCaprio
+        2 | The Shawshank Redemption | 1994-09-23   |  9.99 | R      | 4.9          | Excellent        | Tim Robbins
+        3 | The Godfather            | 1972-03-24   | 14.99 | R      | 4.7          | Excellent        | Marlon Brando
+        4 | The Dark Knight          | 2008-07-18   | 11.99 | PG-13  | 4.8          | Excellent        | Christian Bale
+        5 | Pulp Fiction             | 1994-10-14   | 10.99 | R      | 4.6          | Excellent        | John Travolta
+  ```
+
+- This demonstrates the final result of dbt transformations combining ratings, user reviews, and actor information into a single clean view.

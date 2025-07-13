@@ -43,12 +43,12 @@ services:
         "--profiles-dir",
         "/root",
         "--project-dir",
-        "/dbt"
+        "/custom_postgres"
       ]
     networks:
       - elt_network
     volumes:
-      - ./custom_postgres:/dbt
+      - ../custom_postgres:/custom_postgres
       - ~/.dbt:/root
     depends_on:
       - elt_script
