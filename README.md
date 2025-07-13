@@ -1,46 +1,42 @@
-# Data Engineering Portfolio Project
+# End-to-End Data Engineering Practice Project
 
-This project is a hands-on portfolio piece demonstrating real-world data engineering skills using Docker, SQL, and a custom ELT pipeline.
 
-It was built by following and extending Docker’s official getting started guide: https://docs.docker.com/get-started/
+This project demonstrates a complete, containerized data pipeline—from ingestion to transformation—using industry-relevant tools like **Docker**, **PostgreSQL**, **Python**, and **dbt**.
 
-Key skills showcased:
-- Docker containerization and orchestration
-- SQL (PostgreSQL & MySQL) schema design and querying
-- ELT pipeline development with Python and Docker Compose
-- Workflow automation concepts (e.g., CRON, Airflow)
-- Modern data ingestion tooling (e.g., Airbyte)
+It was designed to simulate how a real-world data engineering team would ingest, move, transform, and model data across systems using modern tools and containers.
+
+Built from scratch, it mimics real-world workflows with:
+- Multi-container orchestration (Docker Compose)
+- ELT-style data flow using custom Python scripting
+- Postgres-to-Postgres data movement
+- Transformations powered by **dbt**
+- Modular, reproducible design ready for automation
+
+**Goal:** Show hands-on experience in production-style data engineering workflows and tooling.
+
+## Stack & Tools Used
+
+- **Docker & Docker Compose**
+- **PostgreSQL (Source + Destination)**
+- **Python (for ELT scripting)**
+- **dbt (data modeling + transformation)**
+- Bash, `pg_dump`, `psql`, Jinja SQL
 
 ## Docker Setup Process
 
-- Start with the sample app repository:
-`git clone https://github.com/docker/getting-started-app.git`
+Used Docker to containerize a sample app. Built with:
+- `docker build -t getting-started .`
+- `docker run -dp 127.0.0.1:3000:3000 getting-started`
 
-- Build the Docker image:
-```
-docker build -t getting-started .
-```
+## Docker Volume Setup
 
-- Launch the app container on port 3000:
-```
-docker run -dp 127.0.0.1:3000:3000 getting-started
-```
+Created a persistent volume using:
+- `docker volume create todo-db`
+- Mounted to `/etc/todos` for persistent app data.
 
-### Step 4: Add Volume for Persistence
+## MySQL Container Setup
 
-- Create a Docker volume to persist data:
-```
-docker volume create todo-db
-```
-
-- Launch the container with the volume mounted at `/etc/todos` inside the container:
-```
-docker run -dp 127.0.0.1:3000:3000 \
-  --mount type=volume,src=todo-db,target=/etc/todos \
-  getting-started
-```
-
-### Step 5: Set Up MySQL Container
+Note: This was part of earlier Docker practice and not used in the final pipeline.
 
 - Create a Docker network to enable container communication:
 ```
@@ -77,7 +73,7 @@ SELECT * FROM todo_items;
 ```
 - This confirms the application is correctly writing todo items to the database.
 
-### Step 6: Docker Compose Setup
+## Docker Compose Setup
 
 - Created a `compose.yaml` file to define and manage multi-container services.
 - Defined services for both the app and MySQL, specifying image, ports, volumes, environment variables, and working directory.
@@ -87,18 +83,35 @@ SELECT * FROM todo_items;
 
 - Completed Docker section
 
-## PostgreSQL SQL Practice
+## Pipeline Breakdown
 
-- Deployed a PostgreSQL container using the official image
-- Created a `users` table and inserted sample records for querying and testing
-- Created a `films` table with constraints (e.g., `CHECK` on `user_rating`) and inserted 20+ movie records
-  ```sql
-  INSERT INTO films (title, release_date, price, rating, user_rating)
-  VALUES ('Inception', '2010-07-16', 12.99, 'PG-13', 4.8);
-  ```
-- Demonstrated SQL fundamentals using `SELECT`, `LIMIT`, `COUNT`, `JOIN`, and `UNION` queries
+**1. Ingestion Layer (Source Postgres)**
+- Starts with sample user and film data loaded into a source PostgreSQL container.
 
-## PostgreSQL ELT Pipeline
+**2. ELT Script (Python)**
+- Waits for DB to be ready
+- Uses `pg_dump` to extract from source
+- Uses `psql` to load into destination Postgres
+
+**3. dbt Transformation**
+- dbt models transform raw data into clean views with business logic (e.g., rating categories, actor summaries)
+- Final outputs: 5+ relational tables materialized in `destination_postgres`
+
+## Source Data Setup & SQL Practice
+
+- Deployed a PostgreSQL container using the official image.
+- Created `users` and `films` tables with constraints and inserted sample records:
+
+```sql
+INSERT INTO films (title, release_date, price, rating, user_rating) VALUES
+('Inception', '2010-07-16', 12.99, 'PG-13', 4.8),
+('The Shawshank Redemption', '1994-09-23', 9.99, 'R', 4.9),
+('The Godfather', '1972-03-24', 14.99, 'R', 4.7);
+```
+
+- Demonstrated SQL fundamentals using `SELECT`, `LIMIT`, `COUNT`, `JOIN`, and `UNION` queries.
+
+## Dockerized ELT Pipeline
 
 - Built a Dockerized ELT pipeline with three coordinated services:
   - `source_postgres`: seeded with schema and sample data
@@ -114,11 +127,29 @@ SELECT * FROM todo_items;
 
 - Result: clean, reproducible cross-database migration handled entirely in containers
 
-- Demonstrated real-world automation, error handling, and container communication in a production-style setup
+## Architecture Overview
+
+```
++------------------+        +-------------------+        +---------------------+
+| source_postgres  | -----> |   ELT Python      | -----> | destination_postgres|
++------------------+        +-------------------+        +---------------------+
+                               |
+                               |
+                          [dbt run]
+                               ↓
+                     Transformed business tables
+```
 
 ---
 
-## dbt Integration (Completed)
+## Why This Project Matters
+
+- Shows **proficiency** in Dockerized workflows
+- Demonstrates **data flow orchestration** with real-world tooling
+- Hands-on use of **dbt**, a critical skill for modern data teams
+- Highlights **problem-solving** and debugging in multi-container systems
+
+## dbt Transformation Workflow
 
 - Implemented dbt transformations on ELT-loaded tables in `destination_postgres`
 - Created four models in the `models/example/` directory:
