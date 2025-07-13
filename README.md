@@ -131,4 +131,16 @@ SELECT * FROM todo_items;
 - Verified model creation in the `destination_db` schema using `psql`
 - Final models include business logic transformations and SQL best practices for portability and reuse
 
+- Final database schema includes:
+
+  ```
+  List of relations
+  Schema | Name           | Type  | Owner
+  -------+----------------+-------+--------
+  public | actors         | table | postgres
+  public | film_actors    | table | postgres
+  public | film_category  | table | postgres
+  public | film_ratings   | table | postgres
+  ```
+
 - Demonstrated a complete data pipeline: from ingestion → ELT → transformation → materialized data models
