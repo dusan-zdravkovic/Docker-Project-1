@@ -118,16 +118,17 @@ SELECT * FROM todo_items;
 
 ---
 
-## dbt Integration (Next Phase)
+## dbt Integration (Completed)
 
-- The next stage of the project will integrate **dbt (data build tool)** to enable transformation logic directly within the destination PostgreSQL database.
+- Implemented dbt transformations on ELT-loaded tables in `destination_postgres`
+- Created four models in the `models/example/` directory:
+  - `films.sql`
+  - `film_actors.sql`
+  - `film_category.sql`
+  - `film_ratings.sql`
+- Used CTEs and Jinja templating to build derived tables (e.g. rating categories, actor aggregates)
+- Executed `dbt run` to compile and apply transformations in PostgreSQL
+- Verified model creation in the `destination_db` schema using `psql`
+- Final models include business logic transformations and SQL best practices for portability and reuse
 
-- Planned steps:
-  - Set up a `dbt` project targeting the `destination_postgres` service
-  - Define staging and transformation models based on the ELT-loaded tables (`users`, `films`, etc.)
-  - Use `dbt run` to apply transformations and `dbt docs` to generate documentation
-
-- This phase will showcase:
-  - SQL-based transformation pipelines
-  - Reproducible, version-controlled modeling layers
-  - Automated documentation and testing within a data stack
+- Demonstrated a complete data pipeline: from ingestion → ELT → transformation → materialized data models
